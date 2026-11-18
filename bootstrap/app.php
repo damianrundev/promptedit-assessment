@@ -16,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        //
+        $middleware->alias(['admin' => \App\Http\Middleware\EnsureUserIsAdmin::class]);
+        $middleware->validateCsrfTokens(except: ['webhooks/pixelforge']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

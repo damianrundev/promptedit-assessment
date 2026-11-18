@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Money;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -32,8 +33,10 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user()?->only('id', 'name', 'email', 'is_admin'),
+                'balance' => $request->user() ? Money::format($request->user()->balanceNano()) : null,
             ],
+            'flash' => ['status' => fn () => $request->session()->get('status')],
         ];
     }
 }
