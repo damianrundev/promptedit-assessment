@@ -107,4 +107,12 @@ Days are UTC and a generation belongs to the day it **completed** (`completed_at
 
 ## Demo account (production)
 
-DEMO_CREDENTIALS_PLACEHOLDER
+Admin (also has credits and the verification generations):
+
+* URL: https://promptedit.51-255-44-145.sslip.io/login
+* Email: `admin@promptedit-demo.test`
+* Password: `rZ5NFYIAWKkPslm4`
+
+It is a throw-away account for this assessment on a simulated provider; no real money is involved.
+
+`php artisan demo:reconcile` prints the same per-day check against `/v1/usage` as the admin page.
