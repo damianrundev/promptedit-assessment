@@ -5,7 +5,10 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import BuyCredits from '@/Components/BuyCredits.vue';
+import { Link, usePage } from '@inertiajs/vue3';
+
+const page = usePage();
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -33,16 +36,20 @@ const showingNavigationDropdown = ref(false);
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
-                                <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                >
-                                    Dashboard
+                                <NavLink :href="route('generations.create')" :active="route().current('generations.create')">
+                                    Generate
+                                </NavLink>
+                                <NavLink :href="route('generations.index')" :active="route().current('generations.index')">
+                                    History
+                                </NavLink>
+                                <NavLink v-if="page.props.auth.user.is_admin" :href="route('admin.report')" :active="route().current('admin.report')">
+                                    Admin report
                                 </NavLink>
                             </div>
                         </div>
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                            <BuyCredits />
                             <!-- Settings Dropdown -->
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
@@ -140,12 +147,16 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
-                        >
-                            Dashboard
+                        <ResponsiveNavLink :href="route('generations.create')" :active="route().current('generations.create')">
+                            Generate
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('generations.index')" :active="route().current('generations.index')">
+                            History
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink v-if="page.props.auth.user.is_admin" :href="route('admin.report')" :active="route().current('admin.report')">
+                            Admin report
+                        </ResponsiveNavLink>
+                        <div class="px-4 py-2 sm:hidden"><BuyCredits /></div>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -189,6 +200,7 @@ const showingNavigationDropdown = ref(false);
                 </div>
             </header>
 
+            <div v-if="page.props.flash?.status" class="bg-green-50 text-green-800 text-sm text-center py-2">{{ page.props.flash.status }}</div>
             <!-- Page Content -->
             <main>
                 <slot />
