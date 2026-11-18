@@ -16,8 +16,10 @@ rsync -az --delete \
   ./ "$HOST:$APP/"
 
 ssh "$HOST" "set -e; cd $APP
-  composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction -q
+  composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-scripts -q
+  sudo -u www-data mkdir -p storage/framework/{cache/data,sessions,views} storage/app/{public,private} storage/logs
   sudo chown -R www-data:www-data storage bootstrap/cache
+  sudo -u www-data $PHP artisan package:discover --ansi -q
   sudo -u www-data $PHP artisan migrate --force
   sudo -u www-data $PHP artisan storage:link --force >/dev/null
   sudo -u www-data $PHP artisan optimize
